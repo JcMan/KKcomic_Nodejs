@@ -4,6 +4,7 @@ var cheerio = require('cheerio');
 var KKparse = require('../models/parse.js');
 var router = express.Router();
 var baseUrl = 'http://www.kuaikanmanhua.com';
+
 /* GET home page. */
 router.get('/', function(req, res, next){
   res.render('index', { title: 'Express'});
@@ -29,8 +30,9 @@ router.get('/update/:pos',function(req,res,next){
 });
 
 /*Get search result*/
-router.get('/search/:keyword',function(req,res,next){
-    var keyword = req.params.keyword;
+/* http://localhost:3000/search/?keyword=神*/
+router.get('/search',function(req,res,next){
+    var keyword = req.query.keyword;
     var reqUrl = baseUrl+'/';
     request.post({url:reqUrl, form: {keyword:keyword}}, function(err,response,body){
         if (!err && response.statusCode == 200){
@@ -42,6 +44,21 @@ router.get('/search/:keyword',function(req,res,next){
         }
     });
 });
+/* Get defferent category comics*/
+/* http://localhost:3000/getComics/?tag=22&page=1 */
+router.get('/getComics',function(req,res,next){
+    var page=req.query.page;
+    var tag = req.query.tag;
+    var reqUrl = baseUrl+'/web/tags/'+tag+'?count=20&page='+page;
+    request(reqUrl, function (error, response, body){
+        if (!error && response.statusCode == 200){
+            resWrite(res,body);
+        }else{
+            errorRes(res);
+        }
+    });
+});
+
 
 /*write res data*/
 function resWrite(res,data){
