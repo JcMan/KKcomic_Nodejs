@@ -28,6 +28,21 @@ router.get('/update/:pos',function(req,res,next){
     }
 });
 
+/*Get search result*/
+router.get('/search/:keyword',function(req,res,next){
+    var keyword = req.params.keyword;
+    var reqUrl = baseUrl+'/';
+    request.post({url:reqUrl, form: {keyword:keyword}}, function(err,response,body){
+        if (!err && response.statusCode == 200){
+            var resData = KKparse.parseSearchData(body,function(str){
+                resWrite(res,str);
+            });
+        }else{
+            errorRes(res);
+        }
+    });
+});
+
 /*write res data*/
 function resWrite(res,data){
     res.writeHead(200,{"Content-Type":"text/html"});
