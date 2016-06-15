@@ -30,7 +30,7 @@ router.get('/update/:pos',function(req,res,next){
 });
 
 /*Get search result*/
-/* http://localhost:3000/search/?keyword=神*/
+/* http://localhost:3001/search/?keyword=神*/
 router.get('/search',function(req,res,next){
     var keyword = req.query.keyword;
     var reqUrl = baseUrl+'/';
@@ -45,11 +45,22 @@ router.get('/search',function(req,res,next){
     });
 });
 /* Get defferent category comics*/
-/* http://localhost:3000/getComics/?tag=22&page=1 */
+/* http://localhost:3001/getComics/?tag=22&page=1*/
 router.get('/getComics',function(req,res,next){
     var page=req.query.page;
     var tag = req.query.tag;
     var reqUrl = baseUrl+'/web/tags/'+tag+'?count=20&page='+page;
+    request(reqUrl, function (error, response, body){
+        if (!error && response.statusCode == 200){
+            resWrite(res,body);
+        }else{
+            errorRes(res);
+        }
+    });
+});
+
+router.get('/categorylist',function(req,res,next){
+    var reqUrl = 'http://api.kuaikanmanhua.com/v1/tag/suggestion';
     request(reqUrl, function (error, response, body){
         if (!error && response.statusCode == 200){
             resWrite(res,body);
