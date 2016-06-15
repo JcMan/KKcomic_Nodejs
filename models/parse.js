@@ -61,6 +61,7 @@ function parseSearchData(data,callback){
 	parseUpdateData(data,callback);
 }
 
+/*parse the comic's details and catalogs*/
 function parseComicDetails(data,callback){
 	var $ = cheerio.load(data);
 	var info = $('div[class=article-info]');
@@ -104,7 +105,27 @@ function parseComicDetails(data,callback){
 	});
 }
 
+/*parse the pics of the catalog*/
+function parsePics(data,callback){
+	var $ = cheerio.load(data);
+	var count = $('img.kklazy').toArray().length;
+	var items = [count];
+	var meizi = $('img.kklazy').each(function(i,e){
+    	var src = $(e).attr("data-kksrc");
+	    items[i] = src;
+	    if (i==count-1) {
+	    	var resData = {
+	    		result:'ok',
+	    		items:items
+	    	};
+	    	var str = JSON.stringify(resData);
+			callback(str);
+	    }
+    });
+}
+
 
 exports.parseUpdateData = parseUpdateData;
 exports.parseSearchData = parseSearchData;
 exports.parseComicDetails = parseComicDetails;
+exports.parsePics = parsePics;

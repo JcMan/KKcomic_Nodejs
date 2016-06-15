@@ -71,6 +71,7 @@ router.get('/categorylist',function(req,res,next){
     });
 });
 
+/*Get the comic's details and catalogs*/
 router.get('/getcomicsdetails',function(req,res,next){
     var id=req.query.id;
     var reqUrl = baseUrl+'/web/topic/'+id;
@@ -80,6 +81,20 @@ router.get('/getcomicsdetails',function(req,res,next){
                 resWrite(res,str);
             });
             
+        }else{
+            errorRes(res);
+        }
+    });
+});
+
+router.get('/getpics',function(req,res,next){
+    var id=req.query.id;
+    var reqUrl = baseUrl+'/web/comic/'+id;
+    request(reqUrl, function (error, response, body){
+        if (!error && response.statusCode == 200){
+            KKparse.parsePics(body,function(str){
+                resWrite(res,str);
+            });
         }else{
             errorRes(res);
         }
