@@ -59,11 +59,27 @@ router.get('/getComics',function(req,res,next){
     });
 });
 
+/*Get comic category list*/
 router.get('/categorylist',function(req,res,next){
     var reqUrl = 'http://api.kuaikanmanhua.com/v1/tag/suggestion';
     request(reqUrl, function (error, response, body){
         if (!error && response.statusCode == 200){
             resWrite(res,body);
+        }else{
+            errorRes(res);
+        }
+    });
+});
+
+router.get('/getcomicsdetails',function(req,res,next){
+    var id=req.query.id;
+    var reqUrl = baseUrl+'/web/topic/'+id;
+    request(reqUrl, function (error, response, body){
+        if (!error && response.statusCode == 200){
+            KKparse.parseComicDetails(body,function(str){
+                resWrite(res,str);
+            });
+            
         }else{
             errorRes(res);
         }
