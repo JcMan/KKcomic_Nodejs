@@ -11,6 +11,7 @@ router.get('/', function(req, res, next){
 });
 
 /* Get the everyday updated comics*/
+/* http://localhost:3001/update/0*/
 router.get('/update/:pos',function(req,res,next){
 	var pos = req.params.pos;
 	var reqUrl = baseUrl+'/?pos='+pos;
@@ -72,6 +73,7 @@ router.get('/categorylist',function(req,res,next){
 });
 
 /*Get the comic's details and catalogs*/
+/* http://localhost:3001/getcomicsdetails/?id=147*/
 router.get('/getcomicsdetails',function(req,res,next){
     var id=req.query.id;
     var reqUrl = baseUrl+'/web/topic/'+id;
@@ -86,7 +88,7 @@ router.get('/getcomicsdetails',function(req,res,next){
         }
     });
 });
-
+/* http://localhost:3001/getpics/?id=9079*/
 router.get('/getpics',function(req,res,next){
     var id=req.query.id;
     var reqUrl = baseUrl+'/web/comic/'+id;
